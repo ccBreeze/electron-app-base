@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: electron-app
+productName: 测试更新
 directories:
   buildResources: build
 files:
@@ -8,6 +8,8 @@ files:
   - '!electron.vite.config.{js,ts,mjs,cjs}'
   - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!server/**'
+asar: false
 asarUnpack:
   - resources/**
 win:

@@ -1,24 +1,36 @@
-<script setup>
-import Versions from './components/Versions.vue'
-
-const ipcHandle = () => window.electron.ipcRenderer.send('ping')
-</script>
-
 <template>
-  <img alt="logo" class="logo" src="./assets/electron.svg" />
-  <div class="creator">Powered by electron-vite</div>
-  <div class="text">
-    Build an Electron app with
-    <span class="vue">Vue</span>
-  </div>
-  <p class="tip">Please try pressing <code>F12</code> to open the devTool</p>
-  <div class="actions">
-    <div class="action">
-      <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">Documentation</a>
-    </div>
-    <div class="action">
-      <a target="_blank" rel="noreferrer" @click="ipcHandle">Send IPC</a>
-    </div>
-  </div>
-  <Versions />
+  <h1>我已经更新了</h1>
+  <div>当前版本：{{ info.version }}</div>
+  <div>服务器版本：{{ info.serverVersion }}</div>
+  <button v-if="info.isNeedUpdate" @click="handleUpdate">更新</button>
 </template>
+
+<script setup>
+import { onMounted, reactive } from 'vue'
+
+const info = reactive({
+  version: window.api.packageJson.version,
+  serverVersion: '',
+  isNeedUpdate: false
+})
+const getVersion = async () => {
+  const res = await fetch('http://localhost:8080/api/version')
+  const data = await res.json()
+  // 需要更新
+  info.serverVersion = data.version
+  if (data.version !== info.version) {
+    info.isNeedUpdate = true
+  }
+}
+
+const handleUpdate = async () => {
+  console.log('-----')
+  const response = await fetch('http://localhost:8080/renderer.zip') // 请求ZIP文件
+  const blob = await response.blob()
+  window.api.unzipRendererZip(blob)
+}
+
+onMounted(() => {
+  getVersion()
+})
+</script>
