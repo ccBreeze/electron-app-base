@@ -6,7 +6,7 @@ import packageJson from '../../package.json'
 // Custom APIs for renderer
 const api = {
   packageJson,
-  unzipRendererZip: (blob) => ipcRenderer.send('unzipRendererZip', blob)
+  unzipRendererZip: (buffer) => ipcRenderer.send('unzipRendererZip', buffer)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

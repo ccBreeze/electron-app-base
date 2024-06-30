@@ -24,10 +24,10 @@ const getVersion = async () => {
 }
 
 const handleUpdate = async () => {
-  console.log('-----')
-  const response = await fetch('http://localhost:8080/renderer.zip') // 请求ZIP文件
+  const response = await fetch('http://localhost:8080/app.zip') // 请求ZIP文件
   const blob = await response.blob()
-  window.api.unzipRendererZip(blob)
+  const buffer = await new Response(blob).arrayBuffer()
+  window.api.unzipRendererZip(buffer)
 }
 
 onMounted(() => {
