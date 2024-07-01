@@ -1,8 +1,11 @@
 import path from 'path'
 import { defineConfig } from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
+import compressRenderer from '../plugins/rollup-plugin-compress-renderer.js'
 
 const getResolvePath = (dir) => path.resolve(process.cwd(), dir)
+
+const isCompressRenderer = process.argv.includes('--compress')
 
 export const rendererConfig = {
   renderer: {
@@ -11,7 +14,7 @@ export const rendererConfig = {
         '@': getResolvePath('src/renderer/src')
       }
     },
-    plugins: [vue()]
+    plugins: [vue(), isCompressRenderer && compressRenderer()]
   }
 }
 
