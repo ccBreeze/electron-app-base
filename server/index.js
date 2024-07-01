@@ -13,7 +13,7 @@ app.use(express.static(staticDir))
 app.get('/api/version', (req, res) => {
   // 返回版本信息
   res.status(200).json({
-    version: '1.0.1'
+    version: '1.0.2'
   })
 })
 

@@ -1,6 +1,6 @@
 <template>
   <h1>app.asar.unpacked 更新</h1>
-  <h1>我已经更新了</h1>
+  <h1 style="color: red">我已经更新了 - 分离打包renderer进程</h1>
   <div>当前版本：{{ info.version }}</div>
   <div>服务器版本：{{ info.serverVersion }}</div>
   <button v-if="info.isNeedUpdate" @click="handleUpdate">更新</button>
