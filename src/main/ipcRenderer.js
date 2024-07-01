@@ -6,6 +6,7 @@ import fs from 'fs'
 import fsExtra from 'fs-extra'
 
 // 使用 asar:false 打包后，替换 app 包实现整个应用的更新
+// 当然也可以只替换 renderer 文件夹实现，渲染进程热更新
 ipcMain.on('updateAppAsar', async (event, buffer) => {
   const APP_PATH = app.getAppPath()
   const RESOURCES_PATH = path.join(APP_PATH, '../')
@@ -44,15 +45,13 @@ ipcMain.on('updateAppAsar', async (event, buffer) => {
   })
 })
 
-// 使用 app.asar.unpacked 访问渲染进程
+// 使用 app.asar.unpacked/renderer 访问渲染进程
 // 替换该文件夹达到渲染进程更新的目的
 ipcMain.on('updateAppAsarUnpacked', async (event, buffer) => {
   const APP_PATH = app.getAppPath()
-  const RESOURCES_PATH = path.join(APP_PATH, '../')
-  const UNPACKED_DIR = path.join(RESOURCES_PATH, 'app.asar.unpacked')
-  const ZIP_PATH = path.join(RESOURCES_PATH, 'app.asar.unpacked.zip')
+  const UNPACKED_DIR = path.join(APP_PATH, '../app.asar.unpacked')
+  const ZIP_PATH = path.join(UNPACKED_DIR, 'renderer.zip')
   log.info('🚀 ~ ipcMain.on ~ APP_PATH:', APP_PATH)
-  log.info('🚀 ~ ipcMain.on ~ RESOURCES_PATH:', RESOURCES_PATH)
   log.info('🚀 ~ ipcMain.on ~ UNPACKED_DIR:', UNPACKED_DIR)
   log.info('🚀 ~ ipcMain.on ~ ZIP_PATH:', ZIP_PATH)
 
@@ -62,11 +61,11 @@ ipcMain.on('updateAppAsarUnpacked', async (event, buffer) => {
       log.info('写入错误', err)
       return
     }
-    // 2. 删除旧的 app 目录
-    fsExtra.removeSync(UNPACKED_DIR)
+    // 2. 删除旧的 renderer 目录
+    fsExtra.removeSync(path.join(UNPACKED_DIR, 'renderer'))
     // 3. 读取 zip & 解压文件夹 app
     const zip = new AdmZip(fs.readFileSync(ZIP_PATH))
-    zip.extractAllTo(RESOURCES_PATH, true)
+    zip.extractAllTo(UNPACKED_DIR, true)
     // 4. 删除 zip 包
     fsExtra.remove(ZIP_PATH)
 

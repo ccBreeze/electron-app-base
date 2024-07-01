@@ -26,7 +26,7 @@ const info = reactive({
 })()
 
 const handleUpdate = async () => {
-  const response = await fetch('http://localhost:8080/app.asar.unpacked.zip') // 请求ZIP文件
+  const response = await fetch('http://localhost:8080/renderer.zip') // 请求ZIP文件
   const blob = await response.blob()
   const buffer = await new Response(blob).arrayBuffer()
   window.api.updateAppAsarUnpacked(buffer)
