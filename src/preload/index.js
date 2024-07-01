@@ -6,7 +6,7 @@ import packageJson from '../../package.json'
 // Custom APIs for renderer
 const api = {
   packageJson,
-  unzipRendererZip: (buffer) => ipcRenderer.send('unzipRendererZip', buffer)
+  updateAsarAppPackage: (buffer) => ipcRenderer.send('updateAsarAppPackage', buffer)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

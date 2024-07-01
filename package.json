@@ -23,7 +23,8 @@
     "adm-zip": "^0.5.14",
     "electron-log": "^5.1.5",
     "electron-updater": "^6.1.7",
-    "fs-extra": "^11.2.0"
+    "fs-extra": "^11.2.0",
+    "vue-router": "^4.4.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",

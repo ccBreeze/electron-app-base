@@ -5,13 +5,14 @@ import log from 'electron-log'
 import fs from 'fs'
 import fsExtra from 'fs-extra'
 
-ipcMain.on('unzipRendererZip', async (event, buffer) => {
+// 使用 asar:false 打包后，替换 app 包实现整个应用的更新
+ipcMain.on('updateAsarAppPackage', async (event, buffer) => {
   const APP_PATH = app.getAppPath()
   const RESOURCES_PATH = path.join(APP_PATH, '../')
   const ZIP_PATH = path.join(RESOURCES_PATH, 'app.zip')
   log.info('🚀 ~ ipcMain.on ~ APP_PATH:', APP_PATH)
   log.info('🚀 ~ ipcMain.on ~ RESOURCES_PATH:', RESOURCES_PATH)
-  console.log('🚀 ~ ipcMain.on ~ ZIP_PATH:', ZIP_PATH)
+  log.info('🚀 ~ ipcMain.on ~ ZIP_PATH:', ZIP_PATH)
 
   // 1. 写入 zip 文件
   fs.writeFile(ZIP_PATH, new Uint8Array(buffer), async function (err) {
@@ -35,8 +36,8 @@ ipcMain.on('unzipRendererZip', async (event, buffer) => {
       buttons: ['重启', '稍后'],
       cancelId: 1 // 设置“稍后”为取消按钮
     })
+    // 用户选择了重启
     if (choice.response === 0) {
-      // 用户选择了重启
       app.relaunch() // 准备重启应用
       app.quit() // 关闭当前应用实例，触发重启
     }
