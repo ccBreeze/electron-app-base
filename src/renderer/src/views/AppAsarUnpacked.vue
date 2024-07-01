@@ -1,9 +1,9 @@
 <template>
-  <h1>app.asar 更新</h1>
+  <h1>app.asar.unpacked 更新</h1>
+  <h1>我已经更新了</h1>
   <div>当前版本：{{ info.version }}</div>
   <div>服务器版本：{{ info.serverVersion }}</div>
   <button v-if="info.isNeedUpdate" @click="handleUpdate">更新</button>
-  <h1 v-else>我已经更新了</h1>
 </template>
 
 <script setup>
@@ -26,9 +26,9 @@ const info = reactive({
 })()
 
 const handleUpdate = async () => {
-  const response = await fetch('http://localhost:8080/app.zip') // 请求ZIP文件
+  const response = await fetch('http://localhost:8080/app.asar.unpacked.zip') // 请求ZIP文件
   const blob = await response.blob()
   const buffer = await new Response(blob).arrayBuffer()
-  window.api.updateAppAsar(buffer)
+  window.api.updateAppAsarUnpacked(buffer)
 }
 </script>

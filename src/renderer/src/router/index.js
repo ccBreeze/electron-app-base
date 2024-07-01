@@ -7,18 +7,18 @@ const routes = [
   //   component: () => import('@/App.vue')
   // },
   {
-    path: '/UnpackAsar',
-    name: 'UnpackAsar',
-    component: () => import('@/views/UnpackAsar.vue')
+    path: '/AppAsar',
+    name: 'AppAsar',
+    component: () => import('@/views/AppAsar.vue')
+  },
+  {
+    path: '/AppAsarUnpacked',
+    name: 'AppAsarUnpacked',
+    component: () => import('@/views/AppAsarUnpacked.vue')
   }
 ]
 
 export const router = createRouter({
   history: createWebHashHistory(),
   routes
-})
-
-router.beforeEach((to, from, next) => {
-  console.log('🚀 ~ router.beforeEach ~ to, from, next:', to, from, next)
-  next()
 })

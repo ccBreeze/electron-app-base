@@ -2,6 +2,12 @@ appId: com.electron.app
 productName: 测试更新
 directories:
   buildResources: build
+
+# 直接复制到应用程序的资源目录
+extraResources:
+  # 指定复制到 app.asar.unpacked 目录
+  - { from: 'out/renderer', to: 'app.asar.unpacked/renderer' }
+# 打包后会放入到 app.asar 文件中
 files:
   - '!**/.vscode/*'
   - '!src/*'
@@ -9,9 +15,15 @@ files:
   - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!server/**'
-asar: false
+# 不会产生 app.asar 而是一个 app 文件夹
+#asar: false
+
+# 指定创建 asar 存档时要解压的文件
+# app.asar 文件会有一份
+# app.asar.unpacked 也会有一份
 asarUnpack:
   - resources/**
+
 win:
   executableName: electron-app
 nsis:
