@@ -10,7 +10,8 @@ export default function compressRendererPlugin(params = {}) {
     async writeBundle(options) {
       // 默认值
       Object.assign(params, {
-        outputPath: path.join(options.dir, '../renderer.zip')
+        // 如果输出在 out 目录会被打包到 app.asar 中
+        outputPath: path.join(process.cwd(), 'dist/renderer.zip')
       })
 
       const zip = new AdmZip()
