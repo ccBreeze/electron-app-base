@@ -8,6 +8,8 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup>
+import './apiPractical/testIpcParamsAndResult.js'
+</script>
 
 <style lang="scss" scoped></style>

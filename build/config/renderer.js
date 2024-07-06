@@ -11,11 +11,11 @@ export const rendererConfig = {
   renderer: {
     resolve: {
       alias: {
-        '@': getResolvePath('src/renderer/src')
-      }
+        '@': getResolvePath('src/renderer/src'),
+      },
     },
-    plugins: [vue(), isCompressRenderer && compressRenderer()]
-  }
+    plugins: [vue(), isCompressRenderer && compressRenderer()],
+  },
 }
 
 export default defineConfig(rendererConfig)

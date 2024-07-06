@@ -2,7 +2,10 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import './ipcRenderer'
+
+// TODO: 注册 ipc
+import './ipcRenderer.js'
+import './testIpcParamsAndResult.js'
 
 function createWindow() {
   // Create the browser window.
@@ -14,8 +17,8 @@ function createWindow() {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      sandbox: false,
+    },
   })
 
   mainWindow.on('ready-to-show', () => {
