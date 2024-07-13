@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
 import path from 'path'
 
-import { downloadFileToFolder } from './download.js'
+import { downloadFileToFolder } from '../download.js'
 
 /** 2. 测试参数传递 Object（定义原型链）并返回 */
 const testInvokeParams = (e, obj) => {
@@ -60,7 +60,9 @@ const testInvokeReturnAbortController = (e) => {
   return controller
 }
 
-ipcMain.handle('testInvokeParams', testInvokeParams)
-ipcMain.handle('testInvokeReturn', testInvokeReturn)
-ipcMain.handle('testInvokeParamsAbortController', testInvokeParamsAbortController)
-ipcMain.handle('testInvokeReturnAbortController', testInvokeReturnAbortController)
+export default function () {
+  ipcMain.handle('testInvokeParams', testInvokeParams)
+  ipcMain.handle('testInvokeReturn', testInvokeReturn)
+  ipcMain.handle('testInvokeParamsAbortController', testInvokeParamsAbortController)
+  ipcMain.handle('testInvokeReturnAbortController', testInvokeReturnAbortController)
+}

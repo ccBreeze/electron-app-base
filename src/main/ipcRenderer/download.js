@@ -43,5 +43,6 @@ export const downloadFileToFolder = async (event, { url, outputPath, signal }) =
   })
 }
 
-// TODO: 注册监听
-ipcMain.handle('downloadFileToFolder', downloadFileToFolder)
+export default function () {
+  ipcMain.handle('downloadFileToFolder', downloadFileToFolder)
+}

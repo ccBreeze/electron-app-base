@@ -1,7 +1,7 @@
 /** 1. 测试参数传递不支持的类型 */
 export const testInvokeParamsForPromise = async () => {
   const p = Promise.resolve(1)
-  await window.api.testInvokeParams(p)
+  await window.apiPractical.testIpcParamsAndResult.testInvokeParams(p)
 }
 
 /** 2. 测试参数传递 Object（定义原型链）并返回 */
@@ -16,12 +16,13 @@ export const testInvokeParams = async () => {
   Object.prototype.d = 3
 
   const obj = new B()
-  const result = await window.api.testInvokeParams(obj)
+  const result = await window.apiPractical.testIpcParamsAndResult.testInvokeParams(obj)
   console.log('🚀 ~ testInvokeParams ~ obj:', obj)
   console.log('🚀 ~ testInvokeParams ~ result:', result)
 
   console.log('🚀 ~ test ~ Object.is(obj, result):', Object.is(obj, result))
 }
+testInvokeParams()
 
 /** 3. 测试主进程返回值 Promise */
 export const testInvokeReturn = async () => {
@@ -30,14 +31,14 @@ export const testInvokeReturn = async () => {
   p.abort = () => {}
   console.log('🚀 ~ testInvokeReturn ~ p:', p)
 
-  const result = window.api.testInvokeReturn()
+  const result = window.apiPractical.testIpcParamsAndResult.testInvokeReturn()
   console.log('🚀 ~ testInvokeReturn ~ result:', result)
 }
 
 /** 4.1 渲染进程传递 AbortController 对象 */
 export const testInvokeParamsAbortController = () => {
   const controller = new AbortController()
-  window.api.testInvokeParamsAbortController(controller)
+  window.apiPractical.testIpcParamsAndResult.testInvokeParamsAbortController(controller)
   // ƒ abort() { [native code] }
   console.log('🚀 ~ testInvokeReturnAbortController ~ controller.abort:', controller.abort)
   // AbortController {signal: AbortSignal}
@@ -54,7 +55,8 @@ export const testInvokeParamsAbortController = () => {
 
 /** 4.2 主进程返回 AbortController 对象 */
 export const testInvokeReturnAbortController = async () => {
-  const controller = await window.api.testInvokeReturnAbortController()
+  const controller =
+    await window.apiPractical.testIpcParamsAndResult.testInvokeReturnAbortController()
   console.log(
     '🚀 ~ testInvokeReturnAbortController ~ controller:',
     controller.abort,

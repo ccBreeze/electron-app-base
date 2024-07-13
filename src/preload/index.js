@@ -1,25 +1,27 @@
-import { contextBridge, ipcRenderer } from 'electron'
-
-import testIpcParamsAndResult from './testIpcParamsAndResult.js'
-import packageJson from '../../package.json'
-
-// Custom APIs for renderer
-const api = {
-  ...testIpcParamsAndResult,
-  packageJson,
-  updateAppAsar: (buffer) => ipcRenderer.send('updateAppAsar', buffer),
-  updateAppAsarUnpacked: (buffer) => ipcRenderer.send('updateAppAsarUnpacked', buffer),
-}
+import { contextBridge } from 'electron'
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
+const mount = process.contextIsolated
+  ? contextBridge.exposeInMainWorld // 上下文隔离 webview(local)
+  : (apiKey, api) => (window[apiKey] = api) // 远程托管 webview(URL)
 
-// 上下文隔离 webview(local)
-if (process.contextIsolated) {
-  contextBridge.exposeInMainWorld('api', api)
+// 自动导入
+const modules = import.meta.glob('./modules/**/*.js', {
+  eager: true, // 异步需要 Promise.all()
+  import: 'default',
+})
+
+// 创建目录树
+const dirTree = {}
+for (const path in modules) {
+  const dirs = path.split('/').slice(2) // 移除 . modules 目录
+  const fileName = dirs.pop().split('.')[0]
+  const parentDir = dirs.reduce((parent, name) => (parent[name] ??= {}), dirTree)
+
+  parentDir[fileName] = modules[path]
 }
-// 远程托管 webview(URL)
-else {
-  window.api = api
-}
+
+// 挂载
+Object.entries(dirTree).forEach(([apiKey, api]) => mount(apiKey, api))

@@ -7,7 +7,7 @@ import fsExtra from 'fs-extra'
 
 // 使用 asar:false 打包后，替换 app 包实现整个应用的更新
 // 当然也可以只替换 renderer 文件夹实现，渲染进程热更新
-ipcMain.on('updateAppAsar', async (event, buffer) => {
+const updateAppAsar = async (event, buffer) => {
   const APP_PATH = app.getAppPath()
   const RESOURCES_PATH = path.join(APP_PATH, '../')
   const ZIP_PATH = path.join(RESOURCES_PATH, 'app.zip')
@@ -35,7 +35,7 @@ ipcMain.on('updateAppAsar', async (event, buffer) => {
       title: '重启应用',
       message: '为了使更改生效，应用需要重启。您现在是否要重启？',
       buttons: ['重启', '稍后'],
-      cancelId: 1 // 设置“稍后”为取消按钮
+      cancelId: 1, // 设置“稍后”为取消按钮
     })
     // 用户选择了重启
     if (choice.response === 0) {
@@ -43,11 +43,11 @@ ipcMain.on('updateAppAsar', async (event, buffer) => {
       app.quit() // 关闭当前应用实例，触发重启
     }
   })
-})
+}
 
 // 使用 app.asar.unpacked/renderer 访问渲染进程
 // 替换该文件夹达到渲染进程更新的目的
-ipcMain.on('updateAppAsarUnpacked', async (event, buffer) => {
+const updateAppAsarUnpacked = async (event, buffer) => {
   const APP_PATH = app.getAppPath()
   const UNPACKED_DIR = path.join(APP_PATH, '../app.asar.unpacked')
   const ZIP_PATH = path.join(UNPACKED_DIR, 'renderer.zip')
@@ -75,7 +75,7 @@ ipcMain.on('updateAppAsarUnpacked', async (event, buffer) => {
       title: '重启应用',
       message: '为了使更改生效，应用需要重启。您现在是否要重启？',
       buttons: ['重启', '稍后'],
-      cancelId: 1 // 设置“稍后”为取消按钮
+      cancelId: 1, // 设置“稍后”为取消按钮
     })
     // 用户选择了重启
     if (choice.response === 0) {
@@ -83,4 +83,9 @@ ipcMain.on('updateAppAsarUnpacked', async (event, buffer) => {
       app.quit() // 关闭当前应用实例，触发重启
     }
   })
-})
+}
+
+export default function () {
+  ipcMain.on('updateAppAsar', updateAppAsar)
+  ipcMain.on('updateAppAsarUnpacked', updateAppAsarUnpacked)
+}
